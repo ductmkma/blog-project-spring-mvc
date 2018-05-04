@@ -253,8 +253,9 @@
 <!-- AdminLTE for demo purposes -->
 <script src="<c:url value="/static/dist/js/demo.js"/>"></script>
 <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/datetime.js"></script>
-<script type="text/javascript">
-
-</script>
+<script src="<c:url value="/static/bower_components/ckeditor/ckeditor.js"/>"></script>
+<script src="<c:url value="/static/bower_components/bootstrap-input-tags/bootstrap-tagsinput.js"/>"></script>
+<script src="<c:url value="/static/bower_components/bootstrap-input-tags/typeahead.bundle.js"/>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script> 
 </body>
 </html>

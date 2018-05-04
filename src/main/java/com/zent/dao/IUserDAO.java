@@ -12,4 +12,7 @@ public interface IUserDAO {
 	public void delete(User user);
 	public boolean checkLogin(User user);
 	public String getFullName(User user);
+	public int getUserId(User user);
+	public String getPathAvata(Integer id);
+	
 }

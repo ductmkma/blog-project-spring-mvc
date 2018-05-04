@@ -12,6 +12,11 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<!-- reCAPTCHA with English language -->
+<script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+<!-- reCAPTCHA with Vietnamese language -->
+<script src='https://www.google.com/recaptcha/api.js?hl=vi'></script>
 <style type="text/css">
 .error{
 	color: #ffed00;
@@ -204,6 +209,9 @@ a{color:inherit;text-decoration:none}
 						<label for="pass" class="label">Password</label>
 						<form:input path="password" id="pass" type="password" class="input"/>
 						<form:errors path="password" cssClass="error"></form:errors>
+					</div>
+					<div class="group">
+						<div class="g-recaptcha" data-sitekey="6Ldw-lYUAAAAABhG1bt4ut-zkBouZoSF4woJzFtO"></div>
 					</div>
 					<div class="group">
 						<input id="check" type="checkbox" class="check" checked>

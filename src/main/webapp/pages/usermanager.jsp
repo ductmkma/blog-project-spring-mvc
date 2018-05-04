@@ -243,7 +243,7 @@
   	        "aoColumns": [
   	            { "data": "id" },
   	          	{ "data": "avatar",render: function(data,type,row){
-  	          	return ' <img style="border-radius:0%;" width="50px" height="50px" src="'+data+'"  alt="avatar"/>'
+  	          	return ' <img style="border-radius:0%;" width="50px" height="50px" src="http://localhost:8080/Blog/displayimage/'+row.id+'"  alt="avatar"/>'
 	            } },
   	            { "data": "fullname" },
   	            { "data": "email" },

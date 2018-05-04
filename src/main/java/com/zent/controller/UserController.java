@@ -1,7 +1,9 @@
 package com.zent.controller;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +41,7 @@ import com.zent.entity.User;
 import com.zent.json.UserJsonObject;
 import com.zent.utils.Constant;
 import com.zent.utils.JsonResponse;
+import com.zent.utils.VerifyUtils;
 import com.zent.validator.LoginValidator;
 
 @Controller
@@ -74,6 +78,22 @@ public class UserController {
 		model.addAttribute("user", new User());
 		return "login";
 	}
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index1(Model model, HttpSession session) {
+		if(session.getAttribute("fullname")!=null&&session.getAttribute("fullname")!="") {
+			model.addAttribute("user", new User());
+			return "index";
+		}else {
+			return "redirect:/login";
+		}
+		
+	}
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(Model model, HttpSession session) {
+		session.removeAttribute("fullname");
+		return "redirect:/login";
+	}
+
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -81,17 +101,25 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginsubmit(@ModelAttribute("user") @Validated User user, BindingResult result, Model model,
+	public String loginsubmit(@RequestParam("g-recaptcha-response") String recapchaResponse,@ModelAttribute("user") @Validated User user, BindingResult result, Model model,
 			HttpSession session) {
-		if (result.hasErrors()) {
-			return "login";
-		}
-		if (user != null && userDAO.checkLogin(user)) {
-			session.setAttribute("fullname", userDAO.getFullName(user));
-			return "index";
+		if(recapchaResponse!=null&&recapchaResponse!="") {
+			if(new VerifyUtils().verify(recapchaResponse)) {
+				if (result.hasErrors()) {
+					return "login";
+				}
+				if (user != null && userDAO.checkLogin(user)) {
+					session.setAttribute("fullname", userDAO.getFullName(user));
+					session.setAttribute("userId", userDAO.getUserId(user));
+					return "redirect:index";
+				}else {
+					model.addAttribute("err","Email hoặc mật khẩu không đúng.");
+				}
+			}
 		}else {
-			model.addAttribute("err","Email hoặc mật khẩu không đúng.");
+			model.addAttribute("err","Capcha chưa đúng.");
 		}
+		
 		return null;
 
 	}
@@ -157,7 +185,7 @@ public class UserController {
 		// Save file on system
 		if (!file.getOriginalFilename().isEmpty()) {
 			BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(
-					new File("D:\\JSP_Servlet\\Blog\\src\\main\\webapp\\upload", file.getOriginalFilename())));
+					new File(Constant.PATH, file.getOriginalFilename())));
 			outputStream.write(file.getBytes());
 			outputStream.flush();
 			outputStream.close();
@@ -263,4 +291,23 @@ public class UserController {
 		}
 		return null;
 	}
+	@RequestMapping(value="/displayimage/{id}",method = RequestMethod.GET)
+	public void downloadFile(HttpServletResponse response,@PathVariable("id") Integer id) throws IOException {
+		  String name = userDAO.getPathAvata(id);
+		  File file = new File(Constant.PATH+name);
+		  response.setContentType("image/*");
+		  response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+	      BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file));
+	      BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
+	      
+	      byte[] buffer = new byte[1024];
+	      int bytesRead = 0;
+	      while ((bytesRead = inStream.read(buffer)) != -1) {
+	        outStream.write(buffer, 0, bytesRead);
+	      }
+	      outStream.flush();
+	      inStream.close();
+	}
+	
+	
 }

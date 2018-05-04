@@ -11,5 +11,7 @@ public interface ICategoriesDAO {
 	public void update(Category cate);
 	public void delete(Category cate);
 	public Category getCategory(Integer id);
+	public List<Category> getMostUserCate();
+	
 	
 }

@@ -131,7 +131,7 @@ public class UserDAO implements IUserDAO {
 		Object[] args = new Object[2];
 		args[0] = user.getEmail();
 		args[1] = new Security().md5(user.getPassword());
-		String sql = "SELECT * FROM users WHERE email=? and password=?";
+		String sql = "SELECT * FROM users WHERE group_id=1 and email=? and password=? ";
 		List<User> users = jdbcTemplateObject.query(sql, args, new UserMapper());
 		if (!users.isEmpty()) {
 			return true; 
@@ -143,13 +143,26 @@ public class UserDAO implements IUserDAO {
 		Object[] args = new Object[2];
 		args[0] = user.getEmail();
 		args[1] = new Security().md5(user.getPassword());
-		String sql = "SELECT * FROM users WHERE email=? and password=?";
-		User users = jdbcTemplateObject.queryForObject(sql, args, new UserMapper());
-		if (users!=null) {
-			String fullname = users.getFullname();
-			return fullname; 
-		}
-		return "";
+		String sql = "SELECT fullname FROM users WHERE email=? and password=?";
+		String fullname = (String) jdbcTemplateObject.queryForObject(sql, args, String.class);
+		return fullname;
+	}
+
+	public String getPathAvata(Integer id) {
+		Object[] args = new Object[1];
+		args[0] = id;
+		String sql = "SELECT avatar FROM users WHERE id=?";
+		String filename = (String) jdbcTemplateObject.queryForObject(sql, args, String.class);
+		return filename;
+	}
+
+	public int getUserId(User user) {
+		Object[] args = new Object[2];
+		args[0] = user.getEmail();
+		args[1] = new Security().md5(user.getPassword());
+		String sql = "SELECT id FROM users WHERE email=? and password=?";
+		Integer userId = (Integer) jdbcTemplateObject.queryForObject(sql, args, Integer.class);
+		return userId;
 	}
 
 	

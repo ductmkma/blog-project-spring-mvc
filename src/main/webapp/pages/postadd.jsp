@@ -28,42 +28,50 @@
         </div>
        <div class="box-body container">
 						<div class="row">
-							<form action="" method="POST" role="form">
+							<form:form modelAttribute="posts" action="add" method="post" enctype="multipart/form-data">
 								<div class="col-md-8">
 									<div class="col-md-12">
-										<input type="text" placeholder="Enter title" name="" id="input" class="form-control input-group" title="">
+										<label>Tiêu đề</label>
+										<form:input path="userId" value="${sessionScope.userId}" type="hidden" placeholder="Enter title" name="userId" id="userId" class="form-control input-group" title=""/>
+										<form:input path="title" type="text" placeholder="Enter title" name="title" id="title" class="form-control input-group" title=""/>
+										<form:errors path="title" cssClass="error"></form:errors>
 										<br>
-										<p>Permalink:</p>
 									</div>
 									<div class="col-md-12">
-										<textarea  class="form-control" id="postcontent" name="postcontent" rows="90" cols="80">
-										</textarea>
+										<label>Permalink</label>
+										<form:input path="slug" type="text" placeholder="" readonly="true" name="slug" id="slug" class="form-control input-group" title=""/>
+										<form:errors path="slug" cssClass="error"></form:errors>
+										<br>
+									</div>
+									<div class="col-md-12">
+										<label>Mô tả</label>
+										<form:textarea path="description"  class="form-control" id="description" name="description" rows="4" cols="80"></form:textarea>
+										<form:errors path="description" cssClass="error"></form:errors>
+									</div>
+									<div class="col-md-12">
+										<label>Nội dung</label>
+										<form:textarea path="content"  class="form-control" id="content" name="content" rows="90" cols="80"></form:textarea>
+										<form:errors path="content" cssClass="error"></form:errors>
 									</div>
 								</div>
 								<div class="col-md-3">
+									<label></label>
 									<div class="panel-group">
 										<div class="panel panel-primary">
 											<div class="panel-heading">
 												<h4 class="panel-title">
-													<a style="color:white" data-toggle="collapse" href="#collapse1">
+													<a style="color:white" data-toggle="collapse" href="#collapse1"><i class="fa fa-location-arrow" aria-hidden="true"></i>
 													Publish</a>
 												</h4>
 											</div>
 											<div id="collapse1" class="panel-collapse collapse in">
 												<div class="panel-body form-group">
-													<i class="fa fa-thumb-tack" aria-hidden="true"></i><b>&nbsp&nbspStatus</b>
-													<select class="form-control">
-														<option value="">Draft</option>
-													</select><br>
-													<i class="fa fa-eye" aria-hidden="true"></i><b>&nbsp&nbspVisility</b>
-													<select class="form-control">
-														<option value="">Draft</option>
-													</select><br>
-													<i class="fa fa-calendar" aria-hidden="true"></i><b>&nbsp&nbspPublish</b>
-													<select class="form-control">
-														<option value="">Draft</option>
-													</select><br>
-													<button type="submit" class="btn btn-primary" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Publish</button>
+													<i class="fa fa-check-square-o" aria-hidden="true"></i><b>&nbsp&nbspStatus</b>
+													<form:select path="status" name="status" class="form-control">
+														<form:option value="1">Public</form:option>
+														<form:option value="0">Draft</form:option>
+													</form:select><br>
+													<button style="margin-left: 75px" type="submit" class="btn btn-primary" ><i class="fa fa-rocket" aria-hidden="true"></i> Publish</button>
 												</div>
 											</div>
 										</div>
@@ -84,50 +92,27 @@
 													<div class="tab-content">
 														<div id="allcate" class="tab-pane fade in active">
 															<div class="form-check">
-																<label>
-																	<input type="checkbox"  name="check" checked> <span class="label-text">Option 01</span>
+															 <c:forEach items="${listCate}" var="cate">
+															 	<label>
+																	<form:radiobutton path="categoriesId" checked="true" value="${cate.id}"  name="categoriesId"></form:radiobutton><span class="label-text"><c:out value="${cate.name}"></c:out> </span>
 																</label>
-															</div>
-															<div class="form-check">
-																<label>
-																	<input type="checkbox" name="check"> <span class="label-text">Option 02</span>
-																</label>
-															</div>
-															<div class="form-check">
-																<label>
-																	<input type="checkbox" name="check"> <span class="label-text">Option 03</span>
-																</label>
-															</div>
-															<div class="form-check">
-																<label>
-																	<input type="checkbox" name="check"> <span class="label-text">Option 04</span>
-																</label>
+																<br>
+															 </c:forEach>
+																
 															</div>
 														</div>
 														<div id="mostused" class="tab-pane fade">
 															<div class="form-check">
-																<label>
-																	<input type="checkbox"  name="check" checked> <span class="label-text">Option 01</span>
+																 <c:forEach items="${listUsed}" var="cate">
+															 	<label>
+																	<form:radiobutton path="categoriesId" value="${cate.id}" name="categoriesId"></form:radiobutton> <span class="label-text"><c:out value="${cate.name}"></c:out> </span>	
 																</label>
-															</div>
-															<div class="form-check">
-																<label>
-																	<input type="checkbox" name="check"> <span class="label-text">Option 02</span>
-																</label>
-															</div>
-															<div class="form-check">
-																<label>
-																	<input type="checkbox" name="check"> <span class="label-text">Option 03</span>
-																</label>
-															</div>
-															<div class="form-check">
-																<label>
-																	<input type="checkbox" name="check"> <span class="label-text">Option 04</span>
-																</label>
+																<br>
+															 </c:forEach>
 															</div>
 														</div>
 													</div>
-													<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Add new categories</a>
+													<a href="<%=request.getContextPath()%>/categories/add"><i class="fa fa-plus" aria-hidden="true"></i> Add new categories</a>
 												</div>
 											</div>	
 										</div>
@@ -140,8 +125,11 @@
 											</div>
 											<div id="collapse3" class="panel-collapse collapse in">
 												<div class="panel-body form-group">
-													<input  type="text" id="tagsinput" value="" data-role="tagsinput">
-													<button type="submit" class="btn btn-sm btn-primary">Add</button>
+													<form:input path="tags"  type="text" name="tags" id="tags" class="input"  data-role="tagsinput" value=""/>
+													<button type="button" class="btn btn-sm btn-primary">Add</button>
+													<form:errors path="tags" cssClass="error"></form:errors>
+													
+													<br>
 													<a href="#">Choose most tags used</a>
 												</div>
 											</div>	
@@ -155,8 +143,8 @@
 											</div>
 											<div id="collapse4" class="panel-collapse collapse in">
 												<div class="panel-body form-group">
-												  	<div id="file-upload-form" class="uploader row">
-														<input id="file-upload" type="file" name="avata" accept="image/*" />
+												  	<div id="file-upload-form" class="uploader row" style="margin-left:25px;">
+													 <form:input path="thumbnail" id="file-upload" type="file" name="thumbnail" accept="image/*" /> 
 														<label for="file-upload" id="file-drag"> <img id="file-image" src="#" alt="Preview" class="hidden">
 															<div id="start">
 																<i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -172,13 +160,14 @@
 																</progress>
 															</div>
 														</label>
+														<form:errors path="thumbnail" cssClass="error"></form:errors>
 													</div>
 												</div>
 											</div>	
 										</div>
 									</div>
 								</div>
-							</form>
+							</form:form>
 						</div>
 					</div>
         <!-- /.box-body -->
@@ -192,14 +181,17 @@
   <!-- /.content-wrapper -->
 <%@include file="footer.jsp" %>
 <script type="text/javascript">
+
 	$(document).ready(function(){
 		//ckeditor
-		CKEDITOR.replace('postcontent')
+		CKEDITOR.replace('content',{
+			height:600
+		});
 		//Tạo slug tự động
-		$("#name").on('keyup',function(){
+		$("#title").on('keyup',function(){
 			 var title, slug;
 	         //Lấy text từ thẻ input title 
-	         title = $("#name").val();
+	         title = $("#title").val();
 
 	         //Đổi chữ hoa thành chữ thường
 	         slug = title.toLowerCase();
@@ -227,7 +219,7 @@
 	         slug = slug.replace(/\@\-|\-\@|\@/gi, '');
 	         //In slug ra textbox có id “slug”
 	         if(title!=""){
-	        	 $("#slug").val(slug+'-'+random());
+	        	 $("#slug").val("http://localhost:8080/"+slug+'-'+random());
 	         }else{
 	        	 $("#slug").val("");
 	         }
@@ -241,6 +233,164 @@
 			  }
 		   return text;
 		}
+		//upload ảnh
+		ekUpload();
+		function ekUpload() {
+			function Init() {
+
+				var fileSelect = document
+						.getElementById('file-upload'), fileDrag = document
+						.getElementById('file-drag'), submitButton = document
+						.getElementById('submit-button');
+
+				fileSelect.addEventListener('change',fileSelectHandler, false);
+
+				// Is XHR2 available?
+				var xhr = new XMLHttpRequest();
+				if (xhr.upload) {
+					// File Drop
+					fileDrag.addEventListener('dragover',
+							fileDragHover, false);
+					fileDrag.addEventListener('dragleave',
+							fileDragHover, false);
+					fileDrag.addEventListener('drop',
+							fileSelectHandler, false);
+				}
+			}
+
+			function fileDragHover(e) {
+				var fileDrag = document.getElementById('file-drag');
+				e.stopPropagation();
+				e.preventDefault();
+
+				fileDrag.className = (e.type === 'dragover' ? 'hover'
+						: 'modal-body file-upload');
+			}
+
+			function fileSelectHandler(e) {
+				// Fetch FileList object
+				var files = e.target.files || e.dataTransfer.files;
+
+				// Cancel event and hover styling
+				fileDragHover(e);
+
+				// Process all File objects
+				for (var i = 0, f; f = files[i]; i++) {
+					parseFile(f);
+					uploadFile(f);
+				}
+			}
+
+			// Output
+			function output(msg) {
+				// Response
+				var m = document.getElementById('messages');
+				m.innerHTML = msg;
+			}
+
+			function parseFile(file) {
+				output('<strong>' + encodeURI(file.name)
+						+ '</strong>');
+
+				// var fileType = file.type;
+				// console.log(fileType);
+				var imageName = file.name;
+
+				var isGood = (/\.(?=gif|jpg|png|jpeg)/gi)
+						.test(imageName);
+				if (isGood) {
+					document.getElementById('start').classList
+							.add("hidden");
+					document.getElementById('response').classList
+							.remove("hidden");
+					document.getElementById('notimage').classList
+							.add("hidden");
+					// Thumbnail Preview
+					document.getElementById('file-image').classList
+							.remove("hidden");
+					document.getElementById('file-image').src = URL
+							.createObjectURL(file);
+				} else {
+					document.getElementById('file-image').classList
+							.add("hidden");
+					document.getElementById('notimage').classList
+							.remove("hidden");
+					document.getElementById('start').classList
+							.remove("hidden");
+					document.getElementById('response').classList
+							.add("hidden");
+					document.getElementById("file-upload-form")
+							.reset();
+				}
+			}
+
+			function setProgressMaxValue(e) {
+				var pBar = document.getElementById('file-progress');
+
+				if (e.lengthComputable) {
+					pBar.max = e.total;
+				}
+			}
+
+			function updateFileProgress(e) {
+				var pBar = document.getElementById('file-progress');
+
+				if (e.lengthComputable) {
+					pBar.value = e.loaded;
+				}
+			}
+
+			function uploadFile(file) {
+
+				var xhr = new XMLHttpRequest(), fileInput = document
+						.getElementById('class-roster-file'), pBar = document
+						.getElementById('file-progress'), fileSizeLimit = 1024; // In
+																				// MB
+				if (xhr.upload) {
+					// Check if file is less than x MB
+					if (file.size <= fileSizeLimit * 1024 * 1024) {
+						// Progress bar
+						pBar.style.display = 'inline';
+						xhr.upload.addEventListener('loadstart',
+								setProgressMaxValue, false);
+						xhr.upload.addEventListener('progress',
+								updateFileProgress, false);
+
+						// File received / failed
+						xhr.onreadystatechange = function(e) {
+							if (xhr.readyState == 4) {
+								// Everything is good!
+
+								// progress.className = (xhr.status
+								// == 200 ? "success" : "failure");
+								// document.location.reload(true);
+							}
+						};
+
+						// Start upload
+						xhr.open('POST',
+										document
+												.getElementById('file-upload-form').action,
+										true);
+						xhr.setRequestHeader('X-File-Name',
+								file.name);
+						xhr.setRequestHeader('X-File-Size',
+								file.size);
+						xhr.setRequestHeader('Content-Type',
+								'multipart/form-data');
+					} else {
+						output('Please upload a smaller file (< '
+								+ fileSizeLimit + ' MB).');
+					}
+				}
+			}
+
+			// Check for the various File API support.
+			if (window.File && window.FileList && window.FileReader) {
+				Init();
+			} else {
+				document.getElementById('file-drag').style.display = 'none';
+			}
+		}
 	});
 </script>
-<script type="text/javascript" src='<c:url value="/static/bootstrap-input-tags/bootstrap-tagsinput.js"></c:url>'></script>

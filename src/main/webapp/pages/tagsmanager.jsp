@@ -23,39 +23,6 @@
           <h3 class="box-title">Danh sách thẻ</h3>
             <div class=" pull-right">
             <a id="btn-add"class="btn btn-primary" href="javascript:;"><i class="fa fa-user-plus" aria-hidden="true"></i>Thêm mới</a>
-           <!-- Modal -->
-		  <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    <div class="modal-dialog">
-		      <div class="modal-content">
-		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		          <h4 class="modal-title">Add new tags</h4>
-		        </div>
-		        <div class="modal-body">
-					<form  method="post" id="frm-add" enctype="multipart/form-data">
-					<input type="hidden" class="form-control" name="action" id="action" value="add"/>
-					
-					<div class="form-group row">
-						<label for="inputEmail3" class="col-sm-2 form-control-label">Tags Name</label> 
-						<div class="col-sm-10">
-							<input type="text" class="form-control"  name="tagsname" id="tagsname" placeholder="Tags Name"/>
-							<p id="err_tagsname class="error"></p>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="inputEmail3" class="col-sm-2 form-control-label">Slug tags</label> 
-						<div class="col-sm-10">
-							<input type="text" readonly="readonly" class="form-control"  name="slugtags" id="slugtags" placeholder=""/>
-						</div>
-					</div>
-			        <div class="modal-footer">
-			          <button  type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-			          <button type="submit" id="themmoi" class="btn btn-primary">Add Tags</button>
-			        </div>
-		 		</form>
-		      </div><!-- /.modal-content -->
-		    </div><!-- /.modal-dialog -->
-		  </div><!-- /.modal -->
           </div>
         </div>
         <div class="box-body">
@@ -74,6 +41,39 @@
 				</tbody>
 		</table>
         </div>
+        <!-- Modal -->
+		  <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		          <h4 class="modal-title">Add new tags</h4>
+		        </div>
+		        <div class="modal-body">
+					<form  method="post" id="frm-add" enctype="multipart/form-data">
+					<input type="hidden" class="form-control" name="action" id="action" value="add"/>
+					
+					<div class="form-group row">
+						<label for="inputEmail3" class="col-sm-2 form-control-label">Tags Name</label> 
+						<div class="col-sm-10">
+							<input type="text" class="form-control"  name="name" id="name" placeholder="Tags Name"/>
+							<p id="err_tagsname" class="error"></p>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="inputEmail3" class="col-sm-2 form-control-label">Slug tags</label> 
+						<div class="col-sm-10">
+							<input type="text" readonly="readonly" class="form-control"  name="slug" id="slug" placeholder=""/>
+						</div>
+					</div>
+			        <div class="modal-footer">
+			          <button  type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+			          <button type="submit" id="themmoi" class="btn btn-primary">Add Tags</button>
+			        </div>
+		 		</form>
+		      </div><!-- /.modal-content -->
+		    </div><!-- /.modal-dialog -->
+		  </div><!-- /.modal -->
         <!-- /.box-body -->
         <!-- /.box-footer-->
       </div>
@@ -122,10 +122,10 @@
   	          	{ "data": "name"},
   	            { "data": "slug" },
   	            { "data": "count" },
-  	         	{ "data": "createdAt" },
+  	         	{ "data": "createdAt", },
   	         	{ "data": "action",
   	            	render: function (data, type, row) {
-  	                    return ' <a class="btn btn-primary btn-sm btn-edit" href="categories/edit/'+row.id+'" id="'+row.id+'"  title="Sửa"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <spring:message code="edit"></spring:message></a> <a id="'+row.id+'" class="btn btn-danger btn-sm btn-delete " href="javascript:;" title="Xóa" ><i id="deleteUnit" class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="delete"></spring:message></a>';
+  	                    return ' <a class="btn btn-primary btn-sm btn-edit" href="javascript:;" id="'+row.id+'"  title="Sửa"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa</a> <a id="'+row.id+'" class="btn btn-danger btn-sm btn-delete " href="javascript:;" title="Xóa" ><i id="deleteUnit" class="fa fa-trash-o" aria-hidden="true"></i> Xóa</a>';
   	            }},  
   	        ]
   	    });
@@ -133,14 +133,12 @@
   		$("#btn-add").on('click',function(){
   			$("#modal-add").modal('show');
   		});
-  		$("#tagsname").on('keyup',function(){
+  		$("#name").on('keyup',function(){
 			 var title, slug;
 	         //Lấy text từ thẻ input title 
-	         title = $("#tagsname").val();
-
+	         title = $("#name").val();
 	         //Đổi chữ hoa thành chữ thường
 	         slug = title.toLowerCase();
-
 	         //Đổi ký tự có dấu thành không dấu
 	         slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
 	         slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
@@ -164,9 +162,40 @@
 	         slug = slug.replace(/\@\-|\-\@|\@/gi, '');
 	         //In slug ra textbox có id “slug”
 	     
-	        	 $("#slugtags").val(slug);
+	        	 $("#slug").val(slug);
 	       
 		});
+  		//add tags
+  		$("#frm-add").on('submit',function(e){
+  			  e.preventDefault();
+  			 	var form= $('#frm-add');
+	             var formData= form.serialize();
+	              $.ajax({
+	                type:'POST',
+	                url:  ctx+"/tag", 
+	              	dataType : 'json',
+	                data:formData,	
+	               	success:function(response){
+	               		if(response.status=="SUCCESS"){
+	               				debugger;
+		               			$("#modal-add").modal('hide');
+		               			$('#tabletags').DataTable().ajax.reload();   
+			                  	toastr.success('Thêm mới thành công!');
+	               			}else{
+               					var err_tagsname = response.result[0].codes[3];
+               					$("#err_tagsname").html(err_tagsname);
+               				}
+	               		
+	                },
+	               	 error: function (xhr, ajaxOptions, thrownError)
+	                {
+						toastr.error(thrownError);
+	                }
+	              });
+  		});
+  		//edit tags
+  		
+  		//delete tags
   		$("#tabletags").on("click",'.btn-delete',function(){
   			var code = $(this).attr('id');
   			swal({
@@ -188,7 +217,7 @@
   			    ) */
   			 	 $.ajax({
 		              type: "POST",
-		              url: ctx+"/delete",
+		              url: ctx+"/tag",
 		              data:{
 		            	  action: 'delete',
 		            	  id: code
@@ -196,7 +225,7 @@
 		              success: function(res)
 		              {
 		                if(res.status=="SUCCESS") {
-		                  	$('#tablecate').DataTable().ajax.reload();   
+		                  	$('#tabletags').DataTable().ajax.reload();   
 		                  	toastr.success('Xóa thành công!');
 		                }
 		              },

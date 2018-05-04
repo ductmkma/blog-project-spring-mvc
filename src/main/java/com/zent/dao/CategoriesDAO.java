@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.zent.entity.Category;
 import com.zent.entity.User;
 import com.zent.mapper.CategoriesMapper;
+import com.zent.mapper.CategoriesMostUsedMapper;
 import com.zent.mapper.UserMapper;
 import com.zent.utils.Constant;
 import com.zent.utils.Security;
@@ -127,5 +128,11 @@ public class CategoriesDAO implements ICategoriesDAO {
 		String sql = "SELECT * FROM categories WHERE ID = ?";
 		cate = jdbcTemplateObject.queryForObject(sql, new CategoriesMapper(), obj);
 		return cate;
+	}
+
+	public List<Category> getMostUserCate() {
+		String sql = "SELECT c.id,c.name,count(c.id) dem FROM posts p, categories c where p.categories_id = c.id GROUP BY c.id HAVING dem>5";
+		List<Category> listCate = jdbcTemplateObject.query(sql,new CategoriesMostUsedMapper());
+		return listCate;
 	}
 }

@@ -1,5 +1,7 @@
 package com.zent.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import com.zent.entity.Tags;
 import com.zent.mapper.CategoriesMapper;
 import com.zent.mapper.TagsMapper;
 import com.zent.utils.Constant;
+import com.zent.utils.Security;
 
 public class TagsDAO implements ITagsDAO {
 	private DataSource dataSource;
@@ -78,8 +81,14 @@ public class TagsDAO implements ITagsDAO {
 	}
 
 	public void insert(Tags tag) {
-		// TODO Auto-generated method stub
-		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+		Object[] obj = new Object[3];
+		obj[0] = tag.getName();
+		obj[1] = tag.getSlug();
+		obj[2] = sdf.format(date);
+		String sql  = "INSERT INTO tags(tagsname,slug,created_at) values (?,?,?)";
+		jdbcTemplateObject.update(sql,obj);
 	}
 
 	public void update(Tags tag) {
@@ -88,8 +97,13 @@ public class TagsDAO implements ITagsDAO {
 	}
 
 	public void delete(Tags tag) {
-		// TODO Auto-generated method stub
-		
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+		Object[] obj = new Object[2];
+		obj[0] = sdf.format(date);
+		obj[1] = tag.getId();
+		String sql = "UPDATE tags SET DELETED_AT=? WHERE ID = ?";
+		jdbcTemplateObject.update(sql,obj);
 	}
 
 }

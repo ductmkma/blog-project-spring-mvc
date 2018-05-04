@@ -534,7 +534,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<c:url value="/static/dist/img/user2-160x160.jpg"/>" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs"><c:out value="${sessionScope.fullname}"></c:out> </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -542,7 +542,7 @@
                 <img src="<c:url value="/static/dist/img/user2-160x160.jpg"/>" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
+                  <c:out value="${sessionScope.fullname}"></c:out> - Web Developer
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
@@ -567,7 +567,7 @@
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<%=request.getContextPath() %>/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -590,7 +590,7 @@
           <img src="<c:url value="/static/dist/img/user2-160x160.jpg"/>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p><c:out value="${sessionScope.fullname}"></c:out></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>

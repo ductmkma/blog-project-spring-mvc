@@ -12,6 +12,7 @@
  	
   <!--   cho phép hỗ trợ từ spring mvc: để hiểu được @Controller, @Request Mapping -->
 	<mvc:annotation-driven></mvc:annotation-driven>
+	<context:annotation-config />
 	
 	
 	<!-- quét toàn bộ các lớp trong package để khởi tạo -->
@@ -83,8 +84,18 @@
    		<!-- <property name="categoryValidator" ref="categoryValidator"></property> -->
    </bean>
    
-   
-   
+    <!-- Posts -->
+     <bean id="postsDAO" class="com.zent.dao.PostsDAO">
+   		<property name="dataSource" ref="dataSource"></property>
+   </bean>
+  <bean id="postsValidator" class="com.zent.validator.PostsValidator"></bean>
+   <bean id="postsController" class="com.zent.controller.PostsController">
+   		<property name="postsDAO" ref="postsDAO"></property>
+   		<property name="categoriesDAO" ref="cateDAO"></property>
+   		<property name="postsValidator" ref="postsValidator"></property>
+   		
+   </bean>
+	
    <!-- Cấu hình upload file -->
    <bean id="multipartResolver"
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -189,6 +189,7 @@
 		});
 		//Tạo slug tự động
 		$("#title").on('keyup',function(){
+			var ctx = "${pageContext.request.contextPath}";
 			 var title, slug;
 	         //Lấy text từ thẻ input title 
 	         title = $("#title").val();
@@ -219,7 +220,7 @@
 	         slug = slug.replace(/\@\-|\-\@|\@/gi, '');
 	         //In slug ra textbox có id “slug”
 	         if(title!=""){
-	        	 $("#slug").val("http://localhost:8080/"+slug+'-'+random());
+	        	 $("#slug").val(slug+'-'+random());
 	         }else{
 	        	 $("#slug").val("");
 	         }

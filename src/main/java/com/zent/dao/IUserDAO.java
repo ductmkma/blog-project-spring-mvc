@@ -14,5 +14,6 @@ public interface IUserDAO {
 	public String getFullName(User user);
 	public int getUserId(User user);
 	public String getPathAvata(Integer id);
+	public List<User> getAuthor();
 	
 }

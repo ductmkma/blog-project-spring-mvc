@@ -92,8 +92,22 @@
    <bean id="postsController" class="com.zent.controller.PostsController">
    		<property name="postsDAO" ref="postsDAO"></property>
    		<property name="categoriesDAO" ref="cateDAO"></property>
+   		<property name="tagsDAO" ref="tagsDAO"></property>
    		<property name="postsValidator" ref="postsValidator"></property>
+   		<property name="postsTagsDAO" ref="postsTagsDAO"></property>
    		
+   </bean>
+   
+    <!-- Posts_Tags -->
+     <bean id="postsTagsDAO" class="com.zent.dao.PostsTagsDAO">
+   		<property name="dataSource" ref="dataSource"></property>
+   </bean>
+   <!-- show Blog -->
+   <bean id="blogController" class="com.zent.controller.BlogController">
+   		<property name="postsDAO" ref="postsDAO"></property>
+   		<property name="tagsDAO" ref="tagsDAO"></property>
+   		<property name="categoriesDAO" ref="cateDAO"></property>
+   		<property name="userDAO" ref="userDAO"></property>	
    </bean>
 	
    <!-- Cấu hình upload file -->

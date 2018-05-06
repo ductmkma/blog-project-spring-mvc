@@ -165,5 +165,11 @@ public class UserDAO implements IUserDAO {
 		return userId;
 	}
 
+	public List<User> getAuthor() {
+		String sql = "select * from users where deleted_at is null and status =1 and group_id = 1";
+		List<User> listUser = jdbcTemplateObject.query(sql,new UserMapper());
+		return listUser;
+	}
+
 	
 }

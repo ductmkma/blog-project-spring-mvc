@@ -72,7 +72,7 @@ public class UserController {
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model, HttpSession session) {
 		model.addAttribute("user", new User());
@@ -126,13 +126,23 @@ public class UserController {
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String index(Model model, HttpSession session) {
-		return "usermanager";
+		if(session.getAttribute("fullname")!=null&&session.getAttribute("fullname")!="") {
+			return "usermanager";
+		}else {
+			return "redirect:/login";
+		}
+		
 
 	}
 
 	@RequestMapping(value = "/admin/add", method = RequestMethod.GET)
 	public String add(Model model, HttpSession session) {
-		return "adduser";
+		if(session.getAttribute("fullname")!=null&&session.getAttribute("fullname")!="") {
+			return "adduser";
+		}else{
+			return "redirect:/login";
+		}
+		
 
 	}
 

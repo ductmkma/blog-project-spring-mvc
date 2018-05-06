@@ -57,13 +57,23 @@ public class CategoriesController {
 
 	@RequestMapping(value = "/categories", method = RequestMethod.GET)
 	public String index(Model model, HttpSession session) {
-		return "categoriesmanager";
+		if(session.getAttribute("fullname")!=null&&session.getAttribute("fullname")!="") {
+			return "categoriesmanager";
+		}else {
+			return "redirect:/login";
+		}
+		
 
 	}
 	@RequestMapping(value = "categories/add", method = RequestMethod.GET)
 	public String cate(Model model, HttpSession session) {
-		model.addAttribute("category", new Category());
-		return "categoriesadd";
+		if(session.getAttribute("fullname")!=null&&session.getAttribute("fullname")!="") {
+			model.addAttribute("category", new Category());
+			return "categoriesadd";
+		}else {
+			return "redirect:/login";
+		}
+		
 
 	}
 	//Thêm  mới danh mục

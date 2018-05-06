@@ -10,4 +10,7 @@ public interface ITagsDAO {
 	public void insert(Tags tag);
 	public void update(Tags tag);
 	public void delete(Tags tag);
+	public int getMaxIdTag();
+	public int getIdBySlug(String slug);
+	public List<Tags> getTagsByPost(Integer id);
 }

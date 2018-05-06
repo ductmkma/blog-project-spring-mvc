@@ -12,6 +12,7 @@ public interface ICategoriesDAO {
 	public void delete(Category cate);
 	public Category getCategory(Integer id);
 	public List<Category> getMostUserCate();
+	public Category getCategoryBySlug(String slug);
 	
 	
 }

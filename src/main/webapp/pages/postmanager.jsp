@@ -112,9 +112,9 @@
   	            { "data": "description" },
   	         	{ "data": "status",render:function(data,type,row){
   	         		if(data==0){
-  	         			return "Công khai";
+  	         			return "Bản nháp";
   	         		}else{
-  	         			return "Bí mật";
+  	         			return "Công khai";
   	         		}
   	         	} },
   	         	{ "data": "categoriesName" },
@@ -125,12 +125,12 @@
   	         	} },
   	         	{ "data": "action",
   	            	render: function (data, type, row) {
-  	                    return ' <a class="btn btn-primary btn-sm btn-edit" href="categories/edit/'+row.id+'" id="'+row.id+'"  title="Sửa"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <spring:message code="edit"></spring:message></a> <a id="'+row.id+'" class="btn btn-danger btn-sm btn-delete " href="javascript:;" title="Xóa" ><i id="deleteUnit" class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="delete"></spring:message></a>';
+  	                    return ' <a class="btn btn-primary btn-sm btn-edit" href="post/edit/'+row.id+'" id="'+row.id+'"  title="Sửa"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <spring:message code="edit"></spring:message></a> <a id="'+row.id+'" class="btn btn-danger btn-sm btn-delete " href="javascript:;" title="Xóa" ><i id="deleteUnit" class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="delete"></spring:message></a>';
   	            }},  
   	        ]
   	    });
   		$('th').css('text-align','center');
-  		$("#tablecate").on("click",'.btn-delete',function(){
+  		$("#tableposts").on("click",'.btn-delete',function(){
   			var code = $(this).attr('id');
   			swal({
   			  title: 'Bạn có chắc chắn xóa ?',
@@ -151,7 +151,7 @@
   			    ) */
   			 	 $.ajax({
 		              type: "POST",
-		              url: ctx+"/delete",
+		              url: ctx+"/post/delete",
 		              data:{
 		            	  action: 'delete',
 		            	  id: code
@@ -159,7 +159,7 @@
 		              success: function(res)
 		              {
 		                if(res.status=="SUCCESS") {
-		                  	$('#tablecate').DataTable().ajax.reload();   
+		                  	$('#tableposts').DataTable().ajax.reload();   
 		                  	toastr.success('Xóa thành công!');
 		                }
 		              },

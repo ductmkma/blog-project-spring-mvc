@@ -43,7 +43,12 @@ public class TagsController {
 	}
 	@RequestMapping(value = "/tag", method = RequestMethod.GET)
 	public String index(Model model, HttpSession session) {
-		return "tagsmanager";
+		if(session.getAttribute("fullname")!=null&&session.getAttribute("fullname")!="") {
+			return "tagsmanager";
+		}else {
+			return "redirect:/login";
+		}
+		
 	}
 	@RequestMapping(value = "/tag", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody JsonResponse add(@ModelAttribute(value = "tags") Tags tag, BindingResult result,

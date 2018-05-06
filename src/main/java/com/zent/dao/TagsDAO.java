@@ -87,7 +87,7 @@ public class TagsDAO implements ITagsDAO {
 		obj[0] = tag.getName();
 		obj[1] = tag.getSlug();
 		obj[2] = sdf.format(date);
-		String sql  = "INSERT INTO tags(tagsname,slug,created_at) values (?,?,?)";
+		String sql  = "INSERT INTO tags(name,slug,created_at) values (?,?,?)";
 		jdbcTemplateObject.update(sql,obj);
 	}
 
@@ -104,6 +104,26 @@ public class TagsDAO implements ITagsDAO {
 		obj[1] = tag.getId();
 		String sql = "UPDATE tags SET DELETED_AT=? WHERE ID = ?";
 		jdbcTemplateObject.update(sql,obj);
+	}
+
+	public int getMaxIdTag() {
+		String sql = "SELECT max(id) FROM tags";
+		Integer maxIdTag = (Integer) jdbcTemplateObject.queryForObject(sql, Integer.class);
+		return maxIdTag;
+	}
+
+	public int getIdBySlug(String slug) {
+		String sql = "SELECT id FROM tags where slug='"+slug+"'";
+		Integer idBySlug = (Integer) jdbcTemplateObject.queryForObject(sql, Integer.class);
+		return idBySlug;
+	}
+
+	public List<Tags> getTagsByPost(Integer id) {
+		String sql = "SELECT t.id,t.name,t.slug,t.count,t.created_at,t.updated_at,t.deleted_at FROM posts p,tags t,posts_tags pt where p.id= pt.posts_id and t.id = pt.tags_id and pt.deleted_at is null and p.id = ?";
+		Object[] obj = new Object[1];
+		obj[0] = id;
+		List<Tags> listTags = jdbcTemplateObject.query(sql, obj,new TagsMapper());
+		return listTags;
 	}
 
 }

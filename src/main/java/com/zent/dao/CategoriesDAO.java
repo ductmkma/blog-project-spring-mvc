@@ -45,7 +45,7 @@ public class CategoriesDAO implements ICategoriesDAO {
 	}
 
 	public List<Category> getAll() {
-		String sql = "SELECT * FROM categories where deleted_at is null";
+		String sql = "SELECT * FROM categories where deleted_at is null and status=1";
 		List<Category> listCate = jdbcTemplateObject.query(sql,new CategoriesMapper());
 		return listCate;
 	}
@@ -134,5 +134,13 @@ public class CategoriesDAO implements ICategoriesDAO {
 		String sql = "SELECT c.id,c.name,count(c.id) dem FROM posts p, categories c where p.categories_id = c.id GROUP BY c.id HAVING dem>5";
 		List<Category> listCate = jdbcTemplateObject.query(sql,new CategoriesMostUsedMapper());
 		return listCate;
+	}
+	public Category getCategoryBySlug(String slug) {
+		Category cate = new Category();
+		Object[] obj = new Object[1];
+		obj[0] = slug;
+		String sql = "SELECT * FROM categories WHERE slug = ?";
+		cate = jdbcTemplateObject.queryForObject(sql, new CategoriesMapper(), obj);
+		return cate;
 	}
 }
